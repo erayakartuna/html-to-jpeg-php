@@ -3,7 +3,6 @@
 $(document).ready(function(){
     var i = 0;
     $('.'+content_class_name).each(function() {
-        console.log(i);
         html2canvas(this,{
             onrendered: function (canvas) {
                 //Set hidden field's value to image data (base-64 string)
@@ -17,8 +16,9 @@ $(document).ready(function(){
     });
 
     var timer = setInterval(function () {
-
-        if(i == content.length){
+        if(i == $('.'+content_class_name).length){
+            $('.se-pre-con').hide();
+            $('.'+content_class_name).hide();
             clearInterval(timer);
         }
     }, 1000);

@@ -18,9 +18,8 @@ class HtmlToJpeg
         'hidden_image_names'    => 'img_values',
         'content_class_name'    => 'htmltojpeg-container',
         'form_id'               => 'myForm',
-        'download_button_label' => 'Download Images',
+        'download_button_label' => 'Save and Download Images',
         'append_scripts'        => array(
-            'js/html2canvas.js',
             'js/render.js'
         )
     );
@@ -195,8 +194,8 @@ class HtmlToJpeg
             foreach($valid_files as $file) {
                 $zip->addFile($folder.'/'.$file,$file);
             }
-            $zip->close();
 
+            $zip->close();
 
             return file_exists($destination);
         }
