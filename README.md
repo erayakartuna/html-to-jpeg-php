@@ -6,7 +6,7 @@ You can easily convert your html or php pages to jpeg with this library.
 
 ##Example
 
-You need to create 2 php file.I named "index.php" and "download.php". You must be define your html pages on index.php and after that you should call download function on download.php.You can easily change file names with library config.
+You need to create 2 php files.I named "index.php" and "download.php". You have to define your html pages into the "index.php" and after that you should call download function on "download.php" .You can easily change file names with library config.
 
 ###Index.php
 
