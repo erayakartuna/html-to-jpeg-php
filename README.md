@@ -2,7 +2,10 @@
 Multiple html pages convert to jpeg with html2canvas and PHP. 
 You can easily convert your html or php pages to jpeg with this library.
 
-##Usage
+[Demo](http://eray.info/demo/html-to-jpeg-php)
+
+
+##Example
 
 You need to create 2 php file.I named "index.php" and "download.php". You must be define your html pages on index.php and after that you should call download function on download.php.You can easily change file names with library config.
 
@@ -21,8 +24,8 @@ Add these codes into to body
  include('HtmlToJpeg.php');
  $html2Jpeg = new HtmlToJpeg();
  $html2Jpeg->config["action"] = "download.php";
- $html2Jpeg->renderHtml("<h1>Test</h1><div style='width:200px;height:300px;background:blue'></div>");
- $html2Jpeg->renderView("test.html");
+ $html2Jpeg->renderHtml("<h1>Test</h1><div style='width:200px;height:300px;background:blue'></div>");//You can write html
+ $html2Jpeg->renderView("test.html");//you can add html or php files as a page
  echo $html2Jpeg->output();
 ```
 
