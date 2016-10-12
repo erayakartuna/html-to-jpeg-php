@@ -3,7 +3,7 @@
 /**
  * @author Eray Akartuna - eray.info
  * Class HtmlToJpeg
- * Html To Jpeg Converter With 2d canvas javascript library
+ * Html To Jpeg Converter With html2canvas javascript library
  */
 
 class HtmlToJpeg
