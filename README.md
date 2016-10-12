@@ -42,13 +42,13 @@ $html2jpeg->download();//starting download
 
 Thats it!
 
-##Write Html as a page
+####Write Html as a page
 
 ```php
  $html2Jpeg->renderHtml("<h1>Page</h1><div style='width:200px;height:300px;background:blue'></div>");
 ```
 
-###Add a view as a page
+####Add a view as a page
 ```php
  $html2Jpeg->renderView("test.php");
 ```
