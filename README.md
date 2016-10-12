@@ -8,7 +8,7 @@ You need to create 2 php file.I named "index.php" and "download.php". You must b
 
 ###Index.php
 
-Add to html2canvas and jquery scripts.
+Define to html2canvas and jquery scripts.
 ```html
 
   <script src="https://code.jquery.com/jquery-2.x-git.min.js"></script>
@@ -16,7 +16,7 @@ Add to html2canvas and jquery scripts.
 
 ```
 
-Add php codes into to body
+Add these codes into to body
 ```php
  include('HtmlToJpeg.php');
  $html2Jpeg = new HtmlToJpeg();
