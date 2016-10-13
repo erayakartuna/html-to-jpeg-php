@@ -22,7 +22,6 @@ Add these codes into to body
 ```php
  include('HtmlToJpeg.php');
  $html2Jpeg = new HtmlToJpeg();
- $html2Jpeg->config["action"] = "download.php";
  
  //Pages
  $html2Jpeg->renderHtml("<h1>Page 1</h1><div style='width:200px;height:300px;background:blue'></div>");//You can write html
