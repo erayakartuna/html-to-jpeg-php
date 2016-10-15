@@ -12,7 +12,7 @@ class HtmlToJpeg
      * @var array
      */
 
-    public $config = array();
+    private $config = array();
 
     /**
      * @var array
