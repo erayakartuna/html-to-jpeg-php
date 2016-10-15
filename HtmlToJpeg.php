@@ -1,28 +1,18 @@
 <?php
 
 /**
- * @author Eray Akartuna - eray.info
+ * @author Eray Akartuna - http://github.com/erayakartuna
  * Class HtmlToJpeg
  * Html To Jpeg Converter With html2canvas javascript library
  */
-
 class HtmlToJpeg
 {
 
     /**
      * @var array
      */
-    public $config = array(
-        'folder'                => 'temp',
-        'action_url'            => 'download.php',
-        'hidden_image_names'    => 'img_values',
-        'content_class_name'    => 'htmltojpeg-container',
-        'form_id'               => 'myForm',
-        'download_button_label' => 'Save and Download Images',
-        'append_scripts'        => array(
-            'js/render.js'
-        )
-    );
+
+    public $config = array();
 
     /**
      * @var array
@@ -31,6 +21,25 @@ class HtmlToJpeg
     private $html_contents = array();
 
     /**
+     * Construct method
+     */
+
+    public function __construct()
+    {
+        $this->config = array(
+            'folder' => 'temp',
+            'action_url' => 'download.php',
+            'hidden_image_names' => 'img_values',
+            'content_class_name' => 'htmltojpeg-container',
+            'form_id' => 'myForm',
+            'download_button_label' => 'Save and Download Images',
+            'append_scripts' => array(
+                'js/render.js'
+            ));
+    }
+
+    /**
+     * Output Method
      * Form Creator
      * @return string
      */
@@ -38,28 +47,27 @@ class HtmlToJpeg
 
     public function output()
     {
-        $output = '<form id="'.$this->config['form_id'].'" action="'.$this->config['action_url'].'" method="POST">';
+        $output = '<form id="' . $this->config['form_id'] . '" action="' . $this->config['action_url'] . '" method="POST">';
 
-        foreach($this->html_contents as $i=>$htm)
-        {
-            $output .= '<div class="'.$this->config['content_class_name'].'" id="page-'.$i.'">'.$htm.'</div>';
+        foreach ($this->html_contents as $i => $htm) {
+            $output .= '<div class="' . $this->config['content_class_name'] . '" id="page-' . $i . '">' . $htm . '</div>';
         }
 
-        $output .= '<button type="submit">'.$this->config['download_button_label'].'</button>';
+        $output .= '<button type="submit">' . $this->config['download_button_label'] . '</button>';
         $output .= '</form>';
 
         $output .= "<script>"
-                .  '   var hidden_image_names = "'.$this->config['hidden_image_names'].'";'
-                .  '   var content_class_name = "'.$this->config['content_class_name'].'";'
-                .  '   var form_id = "'.$this->config['form_id'].'";'
-                .  "</script>";
+            . '   var hidden_image_names = "' . $this->config['hidden_image_names'] . '";'
+            . '   var content_class_name = "' . $this->config['content_class_name'] . '";'
+            . '   var form_id = "' . $this->config['form_id'] . '";'
+            . "</script>";
 
         $output .= $this->appendJsFiles();
 
         return $output;
     }
 
-    
+
     /**
      * @param string $html
      */
@@ -78,20 +86,16 @@ class HtmlToJpeg
     {
         try {
 
-            if (!file_exists($src))
-            {
-                throw new Exception ($src.' does not exist');
-            }
-            else
-            {
+            if (!file_exists($src)) {
+                throw new Exception ($src . ' does not exist');
+            } else {
                 ob_start();
                 include($src);
                 $content = ob_get_contents();
                 ob_end_clean();
             }
 
-        }
-        catch(Exception $e) {
+        } catch (Exception $e) {
             echo "Message : " . $e->getMessage();
             echo "Code : " . $e->getCode();
             die();
@@ -108,13 +112,13 @@ class HtmlToJpeg
     {
         $zipname = $this->saveImages();
 
-        if($zipname == ""){
+        if ($zipname == "") {
             echo "error";
             die;
         }
 
         header('Content-Type: application/zip');
-        header('Content-disposition: attachment; filename='.$zipname);
+        header('Content-disposition: attachment; filename=' . $zipname);
         header('Content-Length: ' . filesize($zipname));
         readfile($zipname);
     }
@@ -123,10 +127,11 @@ class HtmlToJpeg
      * Save Images as a Zip From Post
      * @return string
      */
-    public function saveImages(){
+    public function saveImages()
+    {
         $posts = isset($_POST[$this->config['hidden_image_names']]) ? $_POST[$this->config['hidden_image_names']] : array();
 
-        if(empty($posts)){
+        if (empty($posts)) {
             return "";
         }
 
@@ -134,12 +139,11 @@ class HtmlToJpeg
         $zipname = uniqid(rand(), true) . '.zip';
 
 
-        foreach($posts as $key=>$post){
-            $files[] = $this->base64_to_jpeg($post,$imageprefix.'-'.$key.'.jpg',$this->config['folder']);
+        foreach ($posts as $key => $post) {
+            $files[] = $this->base64_to_jpeg($post, $imageprefix . '-' . $key . '.jpg', $this->config['folder']);
         }
 
-        if(!$this->create_zip($files,$zipname,$this->config['folder']))
-        {
+        if (!$this->create_zip($files, $zipname, $this->config['folder'])) {
             return "";
         }
 
@@ -147,13 +151,15 @@ class HtmlToJpeg
     }
 
     /**
-     * @param $base64_string
-     * @param $output_file
+     * @param string $base64_string
+     * @param string $output_file
+     * @param string folder
      * @return mixed
      */
 
-    private function base64_to_jpeg($base64_string, $output_file,$folder = "") {
-        $ifp = fopen($folder.'/'.$output_file, "wb");
+    private function base64_to_jpeg($base64_string, $output_file, $folder = "")
+    {
+        $ifp = fopen($folder . '/' . $output_file, "wb");
         $data = explode(',', $base64_string);
 
         fwrite($ifp, base64_decode($data[1]));
@@ -169,38 +175,37 @@ class HtmlToJpeg
      * @return bool
      */
 
-    private function create_zip($files = array(),$destination = '',$folder = "") {
+    private function create_zip($files = array(), $destination = '', $folder = "")
+    {
 
         $valid_files = array();
 
-        if(is_array($files)) {
+        if (is_array($files)) {
 
-            foreach($files as $file) {
+            foreach ($files as $file) {
                 //make sure the file exists
-                if(file_exists($folder.'/'.$file)) {
+                if (file_exists($folder . '/' . $file)) {
                     $valid_files[] = $file;
                 }
             }
         }
 
-        if(count($valid_files)) {
+        if (count($valid_files)) {
 
             $zip = new ZipArchive();
-            if($zip->open($destination,ZIPARCHIVE::CREATE) !== true) {
+            if ($zip->open($destination, ZIPARCHIVE::CREATE) !== true) {
 
                 return false;
             }
 
-            foreach($valid_files as $file) {
-                $zip->addFile($folder.'/'.$file,$file);
+            foreach ($valid_files as $file) {
+                $zip->addFile($folder . '/' . $file, $file);
             }
 
             $zip->close();
 
             return file_exists($destination);
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
@@ -214,11 +219,21 @@ class HtmlToJpeg
         $htm = '';
         $scripts = $this->config['append_scripts'];
 
-        foreach($scripts as $script){
-            $htm .= '<script src="'.$script.'"></script>';
+        foreach ($scripts as $script) {
+            $htm .= '<script src="' . $script . '"></script>';
         }
 
         return $htm;
+    }
+
+    /**
+     * @param string $key
+     * @param string $value
+     */
+
+    public function setConfig($key, $value = "")
+    {
+        $this->config[$key] = $value;
     }
 }
 
